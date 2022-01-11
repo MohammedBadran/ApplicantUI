@@ -1,0 +1,179 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6" style="text-align:center;">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <span (click)="addNewApplicant(applicantModel)" class="btn btn-primary btn-xs">Add new applicant</span>
+      <br /><br />
+      <div class="table-responsive">
+        <table id="mytable" class="table table-bordred table-striped">
+          <thead>
+            <th>Name</th>
+            <th>Family Name</th>
+            <th>Address</th>
+            <th>country Of Origin</th>
+            <th>eMail Adress</th>
+            <th>age</th>
+            <th>hired</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let item of applicantList">
+              <td>{{item.name}}</td>
+              <td>{{item.familyName}}</td>
+              <td>{{item.address}}</td>
+              <td>{{item.countryOfOrigin}}</td>
+              <td>{{item.eMailAdress}}</td>
+              <td>{{item.age}}</td>
+              <td>{{item.hired}}</td>
+              <td><span class="btn btn-primary" (click)="editApplcant(item,applicantModel)">
+                  <span class="fa fa-edit" ></span>Edit</span></td>
+              <td><span class="btn btn-danger btn-xs" (click)="removeApplcant(item.id,confirmModel)">
+                  <span class="fa fa-trash"></span>Delete</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+</div>
+<ng-template #applicantModel let-modal>
+  <form [formGroup]="applicantForm" (ngSubmit)="onSubmit()">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title"></h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container">
+        <div class="row">
+          <div class="mb-3 col-md-6">
+            <div class="form-group">
+            <label for="description" class="form-label">name</label>
+            <input type="text" class="form-control" formControlName="name" id="name" min="5"/>
+            <span class="text-danger"
+              *ngIf="(registerFormControl.name.touched || submitted) 
+              && registerFormControl.name.errors?.required">
+              This filed is required
+            </span>
+            <span class="text-danger"
+            *ngIf="(registerFormControl.name.touched || submitted) 
+            && registerFormControl.name.errors?.minlength">
+            This field should be at least 5 chars
+          </span>
+          </div>
+          </div>
+          <div class="mb-3 col-md-6">
+            <div class="form-group">
+            <label for="description" class="form-label">family Name</label>
+            <input type="text" class="form-control" formControlName="familyName" />
+            <span class="text-danger"
+              *ngIf="(registerFormControl.familyName.touched || submitted) 
+              && registerFormControl.familyName.errors?.required">
+              This filed is required
+            </span>
+            <span class="text-danger"
+            *ngIf="(registerFormControl.familyName.touched || submitted) 
+            && registerFormControl.familyName.errors?.minlength">
+            This field should be at least 5 chars
+          </span>
+          </div>
+          </div>
+          <div class="mb-3 col-lg-12">
+            <div class="form-group">
+
+            <label for="description" class="form-label">address</label>
+            <input type="text" class="form-control" formControlName="address" />
+            <span class="text-danger"
+              *ngIf="(registerFormControl.address.touched || submitted) 
+              && registerFormControl.address.errors?.required">
+              This filed is required
+            </span>
+            <span class="text-danger"
+            *ngIf="(registerFormControl.address.touched || submitted) 
+            && registerFormControl.address.errors?.minlength">
+            This field should be at least 10 chars
+          </span>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+
+            <label for="countryOfOrigin" class="form-label">countryOfOrigin</label>
+            <input type="text" class="form-control" formControlName="countryOfOrigin" />
+            <span class="text-danger"
+              *ngIf="(registerFormControl.countryOfOrigin.touched || submitted) 
+              && registerFormControl.countryOfOrigin.errors?.required">
+              This filed is required
+            </span>
+            <span class="text-danger"
+              *ngIf="(registerFormControl.countryOfOrigin.touched || submitted) 
+              && registerFormControl.countryOfOrigin.errors?.countryAvaibleStatus">
+              country name is not valid
+            </span>
+         
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+
+          <label for="countryOfOrigin" class="form-label">Email Adress</label>
+          <input type="text" class="form-control" formControlName="emailAdress" />
+          <span class="text-danger"
+            *ngIf="(registerFormControl.emailAdress.touched || submitted) 
+            && registerFormControl.emailAdress.errors?.email">
+            email address not valid
+          </span>
+        </div>
+      </div>
+          <div class="col-md-4">
+            <div class="form-group">
+            <label for="age" class="form-label">age</label>
+            <input type="number" class="form-control" formControlName="age" />
+            <span class="text-danger"
+              *ngIf="(registerFormControl.age.touched || submitted) 
+              && registerFormControl.age.errors?.required">
+              This filed is required
+            </span>
+            <span class="text-danger"
+            *ngIf="(registerFormControl.age.touched || submitted) 
+            && registerFormControl.age.errors?.min || registerFormControl.age.errors?.max">
+            This field should be between 20 and 60
+          </span>
+          </div>
+          </div>
+        <div class="form-check">
+          <input type="checkbox" formControlName="hired" class="form-check-input" id="hired">
+          <label class="form-check-label" for="hired">hired</label>
+        </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-success">Save</button>
+    </div>
+  </form>
+</ng-template>
+<ng-template #confirmModel let-modal>
+<div class="alert-box">
+  <div class="modal-header">
+      <h4 class="modal-title">Confirm</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      Are you sure want to delete this node?
+  </div>
+  <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="onConfirm()">Yes</button>
+      <button type="button" class="btn btn-secondary" (click)="modal.dismiss('Cross click')">No</button>        
+  </div>
+</div>
+</ng-template>
